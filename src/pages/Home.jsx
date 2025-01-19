@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import swal from 'sweetalert';
 
 const Home = () => {
 
@@ -14,8 +15,21 @@ const Home = () => {
 
   const handleDelete = async (id) => {
 
-      await axios.delete(`http://localhost:3000/user/${id}`);
-      setUserData(userData.filter((user) => user.id !== id));
+     
+      swal({
+        title: "Are you sure?",
+        text: "Are you sure that you want to leave this page?",
+        icon: "warning",
+        dangerMode: true,
+      })
+      .then(async(willDelete) => {
+        if (willDelete) {
+          await axios.delete(`http://localhost:3000/user/${id}`);
+         setUserData(userData.filter((user) => user.id !== id));
+          swal("Deleted!", "Your imaginary file has been deleted!", "success");
+        }
+      });
+      
     
   };
 
